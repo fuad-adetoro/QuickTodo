@@ -36,6 +36,9 @@ struct TasksViewModel {
         self.sceneCoordinator = coordinator
     }
     
+    // Challenge 2
+    lazy var statisitics: Observable<TaskStatistics> = self.taskService.statistics()
+    
     func onToggle(task: TaskItem) -> CocoaAction {
         return CocoaAction {
             return self.taskService.toggle(task: task).map { _ in }
@@ -85,5 +88,11 @@ struct TasksViewModel {
             return this.sceneCoordinator.transition(to: Scene.editTask(editViewModel), type: .modal).asObservable()
         }
     }(self)
+    
+    lazy var deleteAction: Action<TaskItem, Void> = { (service: TaskServiceType) in
+        return Action { item in
+            return service.delete(task: item)
+        }
+    }(self.taskService)
 }
 
